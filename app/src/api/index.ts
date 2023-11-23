@@ -5,7 +5,7 @@ import { useAlertStore } from '../stores/alert';
 import router from '../router';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: import.meta.env.VITE_API_URL as string,
 });
 
 api.interceptors.request.use((config) => {
