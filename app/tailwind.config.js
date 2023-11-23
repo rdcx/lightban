@@ -3,40 +3,8 @@ module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   content: [],
   darkMode: true,
-  theme: {
-    extend: {
-      colors: {
-        'ghdark': '#0d1117',
-      }
-      // => @media (min-width: 1536px) { ... }
-    },
-  },
+  theme: {},
   daisyui: {
-    // themes: [
-    //   {
-    //     mytheme: {
-
-    //       "primary": "#1e40af",
-
-    //       "secondary": "#e0f2fe",
-
-    //       "accent": "#60a5fa",
-
-    //       "neutral": "#3b82f6",
-
-    //       "base-100": "#2563eb",
-
-    //       "info": "#2463eb",
-
-    //       "success": "#16a249",
-
-    //       "warning": "#db7706",
-
-    //       "error": "#dc2828",
-    //     },
-    //   },
-    // ],
-
     themes: [
       "light",
       "dark",

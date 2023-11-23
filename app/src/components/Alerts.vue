@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import { useAlertStore } from '@/stores/alert';
+import type { Alert } from '@/types';
+import { computed } from 'vue';
 const alertStore = useAlertStore()
-const alerts = alertStore.alerts
+const alerts = computed(() => alertStore.alerts);
+
+const dismiss = (a: Alert) => {
+    alertStore.dismiss(a)
+}
 </script>
 
 <template>
@@ -29,7 +35,7 @@ const alerts = alertStore.alerts
             </svg>
             <span>{{ alert.message }}</span>
 
-            <button class="btn btn-sm" @click="alertStore.dismiss(alert)">Dismiss</button>
+            <button class="btn btn-sm" @click="dismiss(alert)">Dismiss</button>
         </div>
     </div>
 </template>

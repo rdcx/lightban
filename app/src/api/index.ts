@@ -17,8 +17,11 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-api.interceptors.response.use(res => res, (err) => {
-    if (err.response.status === 401) {
+api.interceptors.response.use(res => res, (res) => {
+    if (res.status >= 200 && res.status < 300) {
+        return res
+    }
+    if (res.response.status === 401) {
         const userStore = useUserStore();
         const alertStore = useAlertStore();
         userStore.logout();
@@ -26,53 +29,19 @@ api.interceptors.response.use(res => res, (err) => {
         alertStore.setAlert('You are not logged in', 'error');
     }
 
-    return err;
+    return Promise.reject(res)
 })
 
 export default {
     auth: {
         login(username: String, password: String) {
             return api.post('/login', { username, password })
-                .then(res => {
-
-                    if (res.status == 200, res.data.token) {
-                        const userStore = useUserStore();
-                        const alertStore = useAlertStore();
-                        alertStore.setAlert('Successfully logged in', 'info');
-                        userStore.setToken(res.data.token);
-                        this.user();
-                    }
-
-                    return res;
-                })
-                .catch(err => {
-                    const alertStore = useAlertStore();
-                    alertStore.setAlert(err.response.data.message, 'error');
-
-                    return err;
-                })
         },
         register(username: String, email: String, password: String) {
             return api.post('/register', { username, email, password })
-                .then(res => {
-                    const alertStore = useAlertStore();
-                    alertStore.setAlert('Successfully registered', 'success');
-
-                    return res;
-                })
-                .catch(err => {
-                    const alertStore = useAlertStore();
-                    alertStore.setAlert(err.response.data.message, 'error');
-
-                    return err;
-                })
         },
         user() {
             return api.get('/user')
-                .then(res => {
-                    const userStore = useUserStore();
-                    userStore.setUser(res.data);
-                })
         }
     },
 }

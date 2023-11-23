@@ -78,7 +78,7 @@ func (h *Handler) Register(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
-			"message": "Invalid request body",
+			"message": err.Error(),
 		})
 		return
 	}
@@ -105,7 +105,7 @@ func (h *Handler) Login(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{
-			"message": "Invalid request body",
+			"message": "Invalid username or password",
 		})
 		return
 	}
@@ -114,7 +114,7 @@ func (h *Handler) Login(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"message": err.Error(),
+			"message": "Invalid username or password",
 		})
 		return
 	}

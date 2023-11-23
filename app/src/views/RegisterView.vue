@@ -3,6 +3,7 @@ import api from '@/api';
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useAlertStore } from '@/stores/alert';
 const { t } = useI18n()
 
 const router = useRouter()
@@ -16,15 +17,16 @@ const register = () => {
     error.value = ''
     api.auth.register(username.value, email.value, password.value)
         .then((res) => {
-
-            if (res.status != 200) {
-                error.value = t("register_error")
-                return
-            }
+            const alertStore = useAlertStore();
+            alertStore.setAlert('Successfully registered', 'success');
 
             router.push({ name: 'login' })
         })
         .catch((err) => {
+            if (err.response.status == 400) {
+                error.value = t(err.response.data.message)
+                return
+            }
             error.value = t("register_error")
         })
 }
