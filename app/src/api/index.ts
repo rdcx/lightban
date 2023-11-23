@@ -1,5 +1,4 @@
 import axios from 'axios';
-import type { CodeFile } from '../types';
 import { useUserStore } from '../stores/user';
 import { useAlertStore } from '../stores/alert';
 import router from '../router';
@@ -44,4 +43,37 @@ export default {
             return api.get('/user')
         }
     },
+    projects: {
+        all() {
+            return api.get('/projects')
+        },
+        get(id: number) {
+            return api.get(`/projects/${id}`)
+        },
+        create(name: String) {
+            return api.post('/projects', { name })
+        },
+    },
+    lists: {
+        create(name: String, projectId: Number) {
+            return api.post('/lists', { name, projectId })
+        },
+        update(id: Number, name: String) {
+            return api.put(`/lists/${id}`, { name })
+        },
+        delete(id: Number) {
+            return api.delete(`/lists/${id}`)
+        }
+    },
+    tasks: {
+        create(name: String, description: String, listId: Number) {
+            return api.post(`/lists/${listId}/tasks`, { name, description, listId })
+        },
+        update(id: Number, name: String, description: String, listId: Number) {
+            return api.put(`/tasks/${id}`, { name, description, list_id: listId })
+        },
+        delete(id: Number) {
+            return api.delete(`/tasks/${id}`)
+        }
+    }
 }

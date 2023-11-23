@@ -1,63 +1,38 @@
-import type { assert } from "console";
-
 interface User {
     id: number;
     username: string;
     email: string;
     password: string;
-    yob: number;
-    createdAt: string;
-    updatedAt: string;
+    created_at: string;
+    updated_at: string;
 }
 
-interface CodeFile {
-    name: string;
-    content: string;
-    readonly: boolean;
-}
-
-interface Lesson {
+interface Project {
     id: number;
     name: string;
-    slug: string;
-    key_name: string;
     description: string;
-    files: CodeFile[];
-    dialogs: Dialog[];
-    helpers: string[];
-    asserts: string[];
-    next_lesson: string;
-    position: number;
-    completed: boolean;
-    createdAt: string;
-    updatedAt: string;
+    created_at: string;
+    updated_at: string;
+    user_id: number;
+    lists: List[];
 }
 
-interface Course {
+interface List {
     id: number;
     name: string;
-    slug: string;
-    key_name: string;
-    description: string;
-    lessons: Lesson[];
     createdAt: string;
     updatedAt: string;
+    project_id: number;
+    tasks: Task[];
 }
 
-interface Lang {
+interface Task {
     id: number;
     name: string;
-    slug: string;
-    key_name: string;
     description: string;
-    courses: Course[];
-    createdAt: string;
-    updatedAt: string;
-}
-
-interface Dialog {
-    key_name: string;
-    trigger: string;
+    created_at: string;
+    updated_at: string;
+    list_id: number;
 }
 
 interface Alert {
@@ -67,4 +42,4 @@ interface Alert {
 
 type AlertType = 'success' | 'error' | 'warning' | 'info';
 
-export type { User, CodeFile, Lesson, Dialog, Alert, AlertType, Course, Lang };
+export type { User, Alert, AlertType, Project, List, Task };

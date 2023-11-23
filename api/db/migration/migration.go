@@ -48,7 +48,7 @@ var migrations = []Migration{
 				deleted_at TIMESTAMP,
 
 				FOREIGN KEY (user_id) REFERENCES users (id),
-				UNIQUE (user_id, name)
+				UNIQUE KEY ` + "`user_id_name`" + ` (user_id, name)
 			);
 			`,
 	},
@@ -64,7 +64,7 @@ var migrations = []Migration{
 				deleted_at TIMESTAMP,
 
 				FOREIGN KEY (project_id) REFERENCES projects (id),
-				UNIQUE (project_id, name)
+				UNIQUE KEY ` + "`project_id_name`" + ` (project_id, name)
 			);
 			`,
 	},
@@ -81,7 +81,7 @@ var migrations = []Migration{
 				deleted_at TIMESTAMP,
 
 				FOREIGN KEY (list_id) REFERENCES lists (id),
-				UNIQUE (list_id, name)
+				UNIQUE KEY ` + "`list_id_name`" + ` (list_id, name)
 			);
 			`,
 	},

@@ -26,7 +26,7 @@ func (db *DB) GetProjectsByUserID(id uint) ([]model.Project, error) {
 
 func (db *DB) GetProject(id uint) (*model.Project, error) {
 	var l model.Project
-	err := db.DB.Where("id = ?", id).First(&l).Error
+	err := db.DB.Where("id = ?", id).Preload("Lists.Tasks").First(&l).Error
 
 	if err != nil {
 		return nil, err

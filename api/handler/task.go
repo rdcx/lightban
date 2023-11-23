@@ -9,11 +9,21 @@ import (
 
 type createTaskRequest struct {
 	Name        string `json:"name" binding:"required,min=1,max=100"`
-	Description string `json:"description" binding:"required,min=1,max=1000"`
+	Description string `json:"description" binding:"min=0,max=1000"`
+}
+
+type updateTaskRequest struct {
+	Name        string `json:"name" binding:"required,min=1,max=100"`
+	Description string `json:"description" binding:"min=0,max=1000"`
 	ListID      uint   `json:"list_id" binding:"required"`
 }
 
 func (h *Handler) CreateTask(c *gin.Context) {
+
+	id := c.Param("id")
+
+	listId, err := strconv.Atoi(id)
+
 	u, ok := c.Get("user")
 	if !ok {
 		c.JSON(401, gin.H{"error": "Unauthorized"})
@@ -27,7 +37,7 @@ func (h *Handler) CreateTask(c *gin.Context) {
 		return
 	}
 
-	list, err := h.db.GetList(req.ListID)
+	list, err := h.db.GetList(uint(listId))
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Not found"})
 		return
@@ -41,7 +51,7 @@ func (h *Handler) CreateTask(c *gin.Context) {
 	task := &model.Task{
 		Name:        req.Name,
 		Description: req.Description,
-		ListID:      req.ListID,
+		ListID:      list.ID,
 	}
 
 	if err := h.db.CreateTask(task); err != nil {
@@ -62,7 +72,7 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	var req createTaskRequest
+	var req updateTaskRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -88,7 +98,8 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 
 	task.Name = req.Name
 	task.Description = req.Description
-	task.ListID = req.ListID
+	task.ListID = list.ID
+	task.List = list
 
 	if err := h.db.UpdateTask(task); err != nil {
 		c.JSON(500, gin.H{"error": "Internal error"})

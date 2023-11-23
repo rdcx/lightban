@@ -18,9 +18,9 @@ func (h *Handler) GetProject(c *gin.Context) {
 		return
 	}
 
-	user := u.(*model.User)
+	usr := u.(*model.User)
 	// refresh the user
-	user, err := h.db.GetUser(user.ID)
+	user, err := h.db.GetUser(usr.ID)
 
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Not found"})
@@ -34,6 +34,12 @@ func (h *Handler) GetProject(c *gin.Context) {
 	}
 
 	project, err := h.db.GetProject(uint(id))
+
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Project not found"})
+		return
+	}
+
 	if project.UserID != user.ID {
 		c.JSON(401, gin.H{"error": "Unauthorized"})
 		return
@@ -86,6 +92,19 @@ func (h *Handler) CreateProject(c *gin.Context) {
 	if err := h.db.CreateProject(project); err != nil {
 		c.JSON(500, gin.H{"error": "Internal error"})
 		return
+	}
+
+	lists := []string{"Pending", "In Progress", "Done"}
+
+	for _, name := range lists {
+		list := &model.List{
+			Name:      name,
+			ProjectID: project.ID,
+		}
+		if err := h.db.CreateList(list); err != nil {
+			c.JSON(500, gin.H{"error": "Internal error"})
+			return
+		}
 	}
 
 	c.JSON(200, project)

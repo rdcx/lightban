@@ -4,7 +4,7 @@ import "lightban/api/model"
 
 func (db *DB) GetTask(id uint) (*model.Task, error) {
 	var c model.Task
-	err := db.DB.Where("id = ?", id).First(&c).Error
+	err := db.DB.Where("id = ?", id).Preload("List.Project").First(&c).Error
 
 	if err != nil {
 		return nil, err
