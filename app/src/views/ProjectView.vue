@@ -14,19 +14,21 @@ const listsCount = computed(() => {
     return project.value.lists.length;
 })
 
-const form = ref({
+const createForms = ref<Array<{
     name: '',
     description: ''
-})
+}>>([])
 
 const addTask = (listId: number) => {
-    api.tasks.create(form.value.name, form.value.description, listId)
+    api.tasks.create(createForms.value[listId].name, createForms.value[listId].description, listId)
         .then((res) => {
             project.value?.lists.forEach((list: List) => {
                 if (list.id == listId) {
                     list.tasks.push(res.data)
                 }
             })
+
+            createForms.value[listId].name = ''
         })
         .catch((err) => {
             console.log(err)
@@ -47,7 +49,7 @@ const moveLeft = (task: any) => {
 
 
     // Find the list to the left
-    const leftList = project.value?.lists.find((list: List) => list.id == task.list_id - 1)
+    const leftList = project.value?.lists.sort((a, b) => b.id - a.id).find((list: List) => list.id < task.list_id)
 
     if (!leftList) return
 
@@ -77,7 +79,7 @@ const moveRight = (task: any) => {
     const list = project.value?.lists.find((list: List) => list.id == task.list_id)
 
     // Find the list to the left
-    const rightList = project.value?.lists.find((list: List) => list.id == task.list_id + 1)
+    const rightList = project.value?.lists.sort((a, b) => a.id - b.id).find((list: List) => list.id > task.list_id)
 
     if (!rightList) return
 
@@ -105,6 +107,14 @@ onMounted(() => {
     api.projects.get(route.params.id as unknown as number)
         .then((res) => {
             project.value = res.data
+
+            // Create forms
+            project.value?.lists.forEach((list: List) => {
+                createForms.value[list.id] = {
+                    name: '',
+                    description: ''
+                }
+            })
         })
         .catch((err) => {
             console.log(err)
@@ -120,10 +130,7 @@ onMounted(() => {
 
             <div class="card-body">
 
-                <input class="input input-bordered w-full" v-model="form.name" placeholder="Task name" />
-
-                <textarea class="textarea textarea-bordered w-full" v-model="form.description"
-                    placeholder="Task description"></textarea>
+                <input class="input input-bordered w-full" v-model="createForms[list.id].name" placeholder="Task name" />
 
                 <button class="btn btn-primary" @click="addTask(list.id)">Add task</button>
             </div>
