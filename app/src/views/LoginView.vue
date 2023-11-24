@@ -25,7 +25,7 @@ const login = () => {
                 api.auth.user()
                     .then((res) => {
                         userStore.setUser(res.data);
-                        router.push({ name: 'home' })
+                        router.push({ name: 'projects' })
                     })
                     .catch((err) => {
                         alertStore.setAlert('Failed to get user', 'error');

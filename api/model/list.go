@@ -6,6 +6,8 @@ type List struct {
 	ID   uint   `json:"id" gorm:"primaryKey"`
 	Name string `yaml:"name" json:"name"`
 
+	Position int `json:"position"`
+
 	ProjectID uint     `json:"project_id"`
 	Project   *Project `json:"project"`
 

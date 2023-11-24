@@ -1,3 +1,5 @@
+import type { NumberLiteralType } from "typescript";
+
 interface User {
     id: number;
     username: string;
@@ -20,6 +22,7 @@ interface Project {
 interface List {
     id: number;
     name: string;
+    position: number;
     createdAt: string;
     updatedAt: string;
     project_id: number;

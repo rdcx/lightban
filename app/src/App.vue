@@ -16,8 +16,9 @@ const logout = () => {
     <div class="flex min-h-full flex-col">
         <Alerts />
         <header class="shrink-0 shadow-md">
-            <div class="mx-auto flex h-16 max-w-[90rem] items-center justify-between px-4 sm:px-6 lg:px-8">
-                <RouterLink to="/">Lightban</RouterLink>
+            <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-0">
+                <RouterLink to="/" class="font-bold text-2xl">Lightban <span
+                        class="text-xs font-light text-accent">v0.0.1</span></RouterLink>
 
                 <div class="flex items-center gap-x-8">
                     <div class="flex-none">
@@ -29,13 +30,6 @@ const logout = () => {
                             </label>
                             <ul tabindex="0"
                                 class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                                <li>
-                                    <a class="justify-between">
-                                        Profile
-                                        <span class="badge">New</span>
-                                    </a>
-                                </li>
-                                <li><a>Settings</a></li>
                                 <li @click="logout"><a>Logout</a></li>
                             </ul>
                         </div>

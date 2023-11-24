@@ -53,13 +53,19 @@ export default {
         create(name: String) {
             return api.post('/projects', { name })
         },
+        update(id: Number, name: String) {
+            return api.put(`/projects/${id}`, { name })
+        },
+        delete(id: Number) {
+            return api.delete(`/projects/${id}`)
+        }
     },
     lists: {
         create(name: String, projectId: Number) {
-            return api.post('/lists', { name, projectId })
+            return api.post(`/projects/${projectId}/lists`, { name })
         },
-        update(id: Number, name: String) {
-            return api.put(`/lists/${id}`, { name })
+        update(id: Number, name: String, position: Number) {
+            return api.put(`/lists/${id}`, { name, position })
         },
         delete(id: Number) {
             return api.delete(`/lists/${id}`)

@@ -59,12 +59,14 @@ var migrations = []Migration{
 				id SERIAL PRIMARY KEY,
 				name VARCHAR(255) NOT NULL,
 				project_id BIGINT UNSIGNED NOT NULL,
+				position INT NOT NULL,
 				created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				deleted_at TIMESTAMP,
 
-				FOREIGN KEY (project_id) REFERENCES projects (id),
+				FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
 				UNIQUE KEY ` + "`project_id_name`" + ` (project_id, name)
+				
 			);
 			`,
 	},
@@ -80,7 +82,7 @@ var migrations = []Migration{
 				updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				deleted_at TIMESTAMP,
 
-				FOREIGN KEY (list_id) REFERENCES lists (id),
+				FOREIGN KEY (list_id) REFERENCES lists (id) ON DELETE CASCADE,
 				UNIQUE KEY ` + "`list_id_name`" + ` (list_id, name)
 			);
 			`,

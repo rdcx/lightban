@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAlertStore } from '@/stores/alert';
+import { useUserStore } from '@/stores/user';
 const { t } = useI18n()
 
 const router = useRouter()
@@ -20,7 +21,35 @@ const register = () => {
             const alertStore = useAlertStore();
             alertStore.setAlert('Successfully registered', 'success');
 
-            router.push({ name: 'login' })
+            api.auth.login(username.value, password.value)
+                .then((res) => {
+                    if (res.status == 200 && res.data.token) {
+                        const userStore = useUserStore();
+                        const alertStore = useAlertStore();
+                        alertStore.setAlert('Successfully logged in', 'info');
+                        userStore.setToken(res.data.token);
+                        api.auth.user()
+                            .then((res) => {
+                                userStore.setUser(res.data);
+                                router.push({ name: 'projects' })
+                            })
+                            .catch((err) => {
+                                alertStore.setAlert('Failed to get user', 'error');
+                            })
+                    }
+                    return res;
+                })
+                .catch(err => {
+                    if (err.response.status == 400) {
+                        const alertStore = useAlertStore();
+                        alertStore.setAlert(err.response.data.message, 'error');
+                        error.value = t(err.response.data.message)
+                        return err;
+                    }
+
+                    return err;
+                })
+
         })
         .catch((err) => {
             if (err.response.status == 400) {

@@ -33,8 +33,8 @@ func SetUp(h *handler.Handler) *gin.Engine {
 	r.DELETE("/projects/:id", h.Auth(h.DeleteProject))
 
 	r.POST("/projects/:id/lists", h.Auth(h.CreateList))
-	r.PUT("/projects/:id/lists/:id", h.Auth(h.UpdateList))
-	r.DELETE("/projects/:id/lists/:id", h.Auth(h.DeleteList))
+	r.PUT("/lists/:id", h.Auth(h.UpdateList))
+	r.DELETE("/lists/:id", h.Auth(h.DeleteList))
 
 	r.POST("/lists/:id/tasks", h.Auth(h.CreateTask))
 	r.PUT("/tasks/:id", h.Auth(h.UpdateTask))

@@ -96,10 +96,11 @@ func (h *Handler) CreateProject(c *gin.Context) {
 
 	lists := []string{"Pending", "In Progress", "Done"}
 
-	for _, name := range lists {
+	for i, name := range lists {
 		list := &model.List{
 			Name:      name,
 			ProjectID: project.ID,
+			Position:  i,
 		}
 		if err := h.db.CreateList(list); err != nil {
 			c.JSON(500, gin.H{"error": "Internal error"})
