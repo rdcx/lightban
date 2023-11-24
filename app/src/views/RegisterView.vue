@@ -64,7 +64,8 @@ const register = () => {
     <div class="max-w-sm mx-auto">
         <div>
             <h1 class="text-2xl font-bold">Register</h1>
-            <p class="text-gray-400">Create an account</p>
+            <p class="text-gray-400">It's free, but you can pay in the form of a follow on X. <a
+                    href="https://x.com/rosschater" target="_blank">@rosschater</a></p>
         </div>
         <div v-if="error" class="mt-4 text-red-500">{{ error }}</div>
         <div class="mt-8">
